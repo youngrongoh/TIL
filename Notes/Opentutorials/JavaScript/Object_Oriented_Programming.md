@@ -478,3 +478,43 @@ const kim = new Person();  // kim Person {}
 ```
 
 class를 만들고 kim이라는 객체를 생성했다.
+
+# 9. class construtor
+
+## 9.1. class의 constructor function
+
+class로 객체를 만들 때는 function이라는 키워드 없이 함수명을 바로 쓴다.
+객체가 생성될 때, 객체의 초기 상태를 정의하는 약속된 함수를 사용하는데, 바로 constructor이다.
+
+```jsx
+class Person {
+    constructor() {
+        console.log('constructor');
+    }
+}
+
+const kim = new Person();
+console.log('kim', kim);
+// constructor
+// kim Person {}
+```
+
+호출한 적도 없는constructor가 먼저 찍히고 이어서 객체에 대한 `console.log`가 찍혔다.
+이는 객체가 생성되는 과정에서 constructor 함수가 실행되었다는 것을 의미한다.
+
+입력값을 주고 초기값을 세팅할 수 있도록 해보자.
+
+```jsx
+class Person {
+    constructor(name, first, second) {
+        this.name = name;
+        this.first = first;
+        this.second = second;
+    }
+}
+
+const kim = new Person('kim', 10, 20);
+console.log('kim', kim); // kim Person { name: 'kim', first: 10, second: 20 }
+```
+
+이렇게 객체가 생성될 때 초기값을 세팅하는 constructor를 클래스 내에서 구현하는 방법을 살펴보았다.
