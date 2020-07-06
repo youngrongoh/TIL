@@ -518,3 +518,68 @@ console.log('kim', kim); // kim Person { name: 'kim', first: 10, second: 20 }
 ```
 
 이렇게 객체가 생성될 때 초기값을 세팅하는 constructor를 클래스 내에서 구현하는 방법을 살펴보았다.
+
+# 10. class에서 객체의 method 구현하기
+
+## 10.1. 메소드 구현
+
+Method: 객체에 소속된 함수
+
+이전에 constructor 함수의 prototype 객체를 통해 공통된 함수를 생성하는 우리는 전통적인 방법을 알아보았다.
+
+```jsx
+function Person(name, first, second) {
+    this.name = name;
+    this.first = first;
+    this.second = second;
+}
+
+Person.prototype.sum = function () {
+    return 'modified : ' + (this.first + this.second);
+}
+```
+
+class 내에서 method를 구현하는 방법을 살펴보자.
+
+가장 간단한 것은 이전의 코드를 그대로 쓰는 것이다.
+
+```jsx
+class Person {
+    constructor(name, first, second) {
+        this.name = name;
+        this.first = first;
+        this.second = second;
+    }
+}
+
+    Person.prototype.sum = function () {
+    return 'prototype : ' + (this.first + this.second);
+}
+```
+
+ 또 한 가지는 class 안에 함수를 넣는 것이다.
+이 때, function 키워는 쓰지 않는다!
+
+```jsx
+class Person {
+    constructor(name, first, second) {
+        this.name = name;
+        this.first = first;
+        this.second = second;
+    }
+    sum() {
+        return 'prototype : ' + (this.first + this.second);
+    }
+}
+```
+
+어떤 객체에서만 메소드를 다르게 동작하게 하고 싶을 때는 어떻게 할 수 있을까?
+
+```jsx
+const kim = new Person('kim', 10, 20);
+kim.sum = function () {
+    return 'this : ' + (this.first + this.second);
+}
+```
+
+위와 같이 해당 객체의 메소드를 수정할 수 있다.
