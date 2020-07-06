@@ -446,3 +446,35 @@ JavaScript에는 ECMA 6에서 추가되었다.
 우리의 서비스에 새로운 기능을 도입하기에 앞서 [Can I use 닷컴](https://caniuse.com/)에서 브라우저 호환성을 확인해보는 것이 좋다.
 
 또한 [Barbel](https://babeljs.io/)과 같은 컴파일러 혹은 트랜스파일러를 통해 이전 버전의 JavaScript로 변환해줄 수 있다.
+
+## 8.2. Classes의 생산성
+
+```jsx
+function Person(name, first, second) {
+    this.name = name;
+    this.first = first;
+    this.second = second;
+}
+
+const kim = new Person('kim', 10, 20);
+```
+
+Person만 보면 그냥 함수이다.
+그런데 new를 붙여 사용하면 이 함수는 객체를 리턴한다.
+그리고 객체가 리턴되기 전에 객체의 속성이 기본적으로 세팅된다.
+이때, 이 함수는 생성자 construtor가 된다.
+constructor는 1)객체를 만들고 2)초기상태를 세팅한다.
+
+그럼 constructor와 동일하게 동작하지만 class를 이용한 코드를 짜보자.
+
+먼저 객체를 만들어보자.
+
+```jsx
+class Person {
+
+}
+
+const kim = new Person();  // kim Person {}
+```
+
+class를 만들고 kim이라는 객체를 생성했다.
