@@ -364,3 +364,40 @@ console.log('lee.sum()', lee.sum()); // 30
 ```
 
 이렇게 우리는 생성자 함수와 new라는 키워드를 통해 새로운 객체를 찍어낼 수 있게 되었다.
+
+# 7. Prototype
+
+## 7.1. Prototype이 필요한 이유
+
+프로토타입(prototype): 원형, 본래의 모습
+
+JavaScript를 prototype based language라고도 부른다.
+
+```jsx
+function Person(name, first, second) {
+    this.name = name;
+    this.first = first;
+    this.second = second;
+    this.sum = function () {
+        return this.first + this.second;
+    }
+}
+```
+
+Person이라는 생성자가를 통해 새로운 객체가 만들어 질 때마다 sum이라는 함수는 계속해서 새로 만들어진다. 한 두 개의 객체를 생성할 때는 큰 문제가 없겠지만, 1억 개의 객체를 생성한다고 가정하면 이는 엄청난 메모리 낭비를 발생시켜 성능을 저하시키게 된다.
+
+```jsx
+const kim = new Person('kim', 10, 20);
+```
+
+Person이라는 생성자를 통해 kim이라는 새로운 객체를 만들었다.
+만약 kim의 sum함수의 동작을 바꾸고 싶다면 아래와 같이 할 수 있다.
+
+```jsx
+kim.sum = function () {
+    return 'modified : ' + (this.first + this.second);
+}
+```
+
+그런데 이런 식으로 바꾸고자 하는 객체가 1천 개라면 이러한 작업을 1천 번 해야한다.
+생성자 안에서 함수(메소드)를 정의하면 이러한 불편함이 생기고 생산성이 떨어진다.
