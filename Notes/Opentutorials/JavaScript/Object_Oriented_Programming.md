@@ -675,3 +675,90 @@ console.log('kim.avg()', kim.avg()); // kim.avg() 15
 
 PersonPlus는 Person을 상속하므로 PersonPlus에 적지 않은 요소와 메소드를 사용할 수 있다.
 PersonPlus를 통해 만든 kim이라는 객체는 Person에 있는 메소드인 sum을 사용할 수 있는 것이다.
+
+# 12. super
+
+## 12.1. super
+
+우리가 기능을 도입할 때마다 복잡성이라는 대가를 치루게 된다.
+그리고 복잡성으로 인해 잘 보이지 않는 자잘한 문제들이 생긴다.
+
+상속을 도입함으로써 자식 클래스와 부모 클래스의 관계 문제를 겪을 수 있다. 이를 위해 super라는 키워드를 살펴보자.
+
+```jsx
+class Person {
+    constructor(name, first, second) {
+        this.name = name;
+        this.first = first;
+        this.second = second;
+    }
+    sum() {
+        return this.first + this.second;
+    }
+}
+
+class PersonPlus extends Person {
+    avg() {
+        return (this.first + this.second) / 2;
+    }
+}
+
+const kim = new PersonPlus('kim', 10, 20);
+```
+
+Person은 유지한 채로 kim에서 first, second 외에 third라는 값을 넣고 싶다면 어떻게 해야할까?
+
+```jsx
+class Person {
+    constructor(name, first, second) {
+        this.name = name;
+        this.first = first;
+        this.second = second;
+    }
+    sum() {
+        return this.first + this.second;
+    }
+}
+
+class PersonPlus extends Person {
+    constructor(name, first, second, third) {
+        this.name = name;
+        this.first = first;
+        this.second = second;
+        this.third = third;
+    }
+    sum() {
+        return this.first + this.second + this.third;
+    }
+    avg() {
+        return (this.first + this.second + this.third) / 3;
+    }
+}
+
+const kim = new PersonPlus('kim', 10, 20, 30);
+```
+
+자식 클래스인 PersonPlus를 이렇게 수정해주면 되지 않을까?
+하지만 이렇게 되면 이 코드는 동작하지 않고, 상속을 도입한 이유가 사라진다.
+이 때, 우리는 super라는 키워드를 사용할 수 있다.
+
+```jsx
+class PersonPlus extends Person {
+    constructor(name, first, second, third) {
+        super(name, first, second);
+        this.third = third;
+    }
+    sum() {
+        return super.sum() + this.third;
+    }
+    avg() {
+        return (this.first + this.second + this.third) / 3;
+    }
+}
+```
+
+class에는 두 가지 용법이 있다.
+
+1. super()는 부모클래스의 생성자를 의미한다. 그래서 자식 클래스의 constructor에서는 super를 쓰고 필요한 요소들을 추가해주면 된다.
+2. super.sum과 같이도 사용할 수 있는데, 이 때 super는 부모 클래스를 의미한다.
+이렇게 우리는 super를 통해 상속으로 인해 생기는 단점을 보완한 수 있다.
