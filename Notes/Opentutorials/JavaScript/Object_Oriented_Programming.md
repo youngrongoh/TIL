@@ -819,3 +819,28 @@ console.log('superObj.superVal =>', superObj.superVal); // superObj.superVal => 
 굉장히 유연한 특징이지만 이로 인해 사고의 가능성이 있다.
  __proto__는 JavaScript 표준으로는 인정하고 있지 않다.
 그러나 대부분의 브라우저와 자바스크립트가 구동되는 시스템들이 이를 구현하여 제공하고 있긴 하다.
+
+## 13.3. Object.create()
+
+ __proto__의 대체제를 살펴보자.
+
+어떤 객체를 부모로 하는 새로운 객체를 만드는 표준화된 방법은 Object.create()을 이용하는 것이다. __proto__를 사용하는 것보다 Object.create()를 사용해 객체와 객체의 관계를 더 명확하게 지정해주는 것이 좋다.
+
+```jsx
+const superObj = { superVal: 'super' };
+
+// var subObj = { subVal: 'sub' };
+// subObj.__proto__ = superObj;
+
+const subObj = Object.create(superObj);
+subObj.subVal = 'sub';
+
+console.log('subObj.subVal =>', subObj.subVal);// subObj.subVal => sub
+console.log('subObj.superVal =>', subObj.superVal); // subObj.superVal => super
+
+subObj.superVal = 'sub';
+console.log('subObj.superVal =>', subObj.superVal); // subObj.superVal => super
+console.log('superObj.superVal =>', superObj.superVal); // superObj.superVal => super
+```
+
+debugger라는 명령을 통해 브라우저에서 Object.create()가__proto__의 값을 변화 시켰을을 확인 해볼 수 있다.
