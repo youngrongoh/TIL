@@ -762,3 +762,31 @@ class에는 두 가지 용법이 있다.
 1. super()는 부모클래스의 생성자를 의미한다. 그래서 자식 클래스의 constructor에서는 super를 쓰고 필요한 요소들을 추가해주면 된다.
 2. super.sum과 같이도 사용할 수 있는데, 이 때 super는 부모 클래스를 의미한다.
 이렇게 우리는 super를 통해 상속으로 인해 생기는 단점을 보완한 수 있다.
+
+# 13. 객체 간의 상속
+
+## 13.1. object inheritance
+
+객체 지향 프로그래밍은 크게 두 가지 요소로 나누어져 있다.
+1) 객체를 만들어 내는 공장인 class
+2) class를 통해 만들어진 구체적인 객체가 있다.
+이 두 가지 요소가 어떻게 상호 작용하느냐에 따라 다른 형태의 객체지향 언어들이 만들어진다.
+JavaScript는 Prototype Based 객체지향 언어이다.
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1e85731b-c8a6-436a-b6fa-e160e46d8814/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1e85731b-c8a6-436a-b6fa-e160e46d8814/Untitled.png)
+
+주류 객체 지향 언어에서는 subclass가 super class의 자식이 되고 sub class를 통해 객체를 만든다. 그래서 객체는 만들어진 순간 그 기능이 결정된다.
+
+JavaScript에서도 class라는 표현과 extends라는 키워드가 있지만 이는 장식에 불과하다.
+JavaScript가 동작하는 내부 매커니즘이 바뀌는 것은 아니며, 다른 언어를 쓰는 개발자들이 쉽게 쓸 수 있도록 해놓은 것 뿐이다.
+
+JavsScript는 다른 객체지향언어들에 비해 자유롭다, 그러나 복잡하고 혼란스러운 면이 있다.
+
+JavaScript에서는 어떤 객체가 다른 어떤 객체로부터 직접 상속 받을 수 있고
+링크만 바꿔주면 얼마든지 상속관계를 바꿀 수 있다.
+이 링크를 prototype link라고 하고
+이 링크가 가리키고 있는 객체를 prototype object라고 한다.
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/79f19850-4544-4340-83bb-7bee43b9f737/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/79f19850-4544-4340-83bb-7bee43b9f737/Untitled.png)
+
+그럼 JavaScript의 객체지향은 어떻게 다른지 살펴보자.
