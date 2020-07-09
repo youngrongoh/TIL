@@ -844,3 +844,67 @@ console.log('superObj.superVal =>', superObj.superVal); // superObj.superVal => 
 ```
 
 debugger라는 명령을 통해 브라우저에서 Object.create()가__proto__의 값을 변화 시켰을을 확인 해볼 수 있다.
+
+## 13.4. 객체상속의 사용
+
+```jsx
+const kim = {
+    name: 'kim',
+    first: 10, second: 20,
+    sum: function () { return this.first + this.second }
+}
+```
+
+객체를 하나 정의하였다.
+그리고 이와 같은 하나의 객체를 더 만들어보려 한다.
+그런데 sum이라는 함수를 다시 작성해야 하는 문제가 생긴다.
+
+```jsx
+const lee = {
+    name: 'lee',
+    first: 10, second: 10,
+}
+```
+
+이 때, 앞서 배운 __**proto**__를 활용할 수 있다.
+
+```jsx
+lee.__proto__ = kim;
+
+console.log('lee.sum():', lee.sum()); // lee.sum(): 20
+```
+
+lee 객체에서 sum() 함수를 정의하지 않았음에도 __proto__를 통해 kim의 해당 함수를 상속 받아 정상적으로 lee.sum()의 결과가 출력되게 되었다.
+
+또한, kim에는 없으나 lee에서만 새로운 기능을 추가할 수도 있다.
+
+```jsx
+const lee = {
+    name: 'lee',
+    first: 10, second: 10,
+    avg: function () {
+        return (this.first + this.second) / 2;
+    }
+}
+
+console.log('lee.avg():', lee.avg()); // lee.avg(): 10
+```
+
+lee 객체 안에 함수를 추가해주기만 하면 된다.
+
+이번에는 Object.create()를 사용해서 같은 작업을 해보자.
+
+```jsx
+const lee = Object.create(kim);
+lee.name = 'lee';
+lee.first = 10;
+lee.second = 10;
+lee.avg = function () {
+    return (this.first + this.second) / 2;
+}
+
+console.log('lee.sum():', lee.sum()); // lee.sum(): 20
+console.log('lee.avg():', lee.avg()); // lee.avg(): 10
+```
+
+Object.create()는 표준화된 방법이나, 처음 JavaScript가 나왔을 때부터 있던 것은 아니고, __proto__를 쓰지 않기 위해 도입된 것이므로 아주 구버전의 브라우저에서는 지원하지 않을 수도 있으나 현재로서는 호환성에 큰 문제는 없다고 봐도 무방하다.
