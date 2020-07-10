@@ -916,3 +916,48 @@ Object.create()는 표준화된 방법이나, 처음 JavaScript가 나왔을 때
 클래스 기반의 객체 지향언어에서는 클래스가 클래스를 상속하는 것이 아니라 JavaScript에서와 같이 객체가 객체를 상속하고, 런타임 중에 상속을 바꿀 수 있다는 점은 굉장히 기괴한 일이다.
 
 또한 Javascript에서는 함수가 함수 일뿐만 아니라 new를 붙여 객체를 생성하는 생성자가 될 수 있다.
+
+## 14.2. call
+
+```jsx
+const kim = { name: 'kim', first: 10, second: 20 };
+const lee = { name: 'lee', first: 10, second: 10 };
+function sum() {
+    return this.first + this.second;
+}
+```
+
+두 개의 객체를 만들었다. 그런데 앞서 해왔던 것과 다른 점이 있다.
+바로, 함수가 객체 안에 메소드로 들어있는 것이 아니라 밖으로 빠져있다.
+이런 경우에도 이 함수를 메소드처럼 사용할 수 있다.
+
+아래는 kim이라는 객체 안에 sum이라는 메소드가 있는 경우, 즉 kim.sum()과 같다
+
+```jsx
+sum.call(kim);
+```
+
+모든 함수는 call이라고 하는 메소드를 가지고 있다.
+JavaScript에서는 함수도 객체이기 때문이다.
+
+```jsx
+console.log("sum.call(kim) =>", sum.call(kim)); // sum.call(kim) => 30
+console.log("sum.call(lee) =>", sum.call(lee)); // sum.call(lee) => 20
+```
+
+sum은 kim이라는 객체에 속해있는 메소드가 아니다.
+그런데, sum 안에 있는 call이라는 메소드를 통해
+마치 sum이 kim 안에 있는 메소드인 것 처럼 실행되었다.
+
+call의 첫번째 인자로 그 함수의 내부적인 this를 무엇으로 할 것인가가 오고
+두번째 인자부터는 그 함수의 파라미터들이 오게 된다.
+
+```jsx
+function sum2(prefix) {
+    return prefix + (this.first + this.second);
+}
+console.log("sum2.call(kim)", sum2.call(kim, '=> ')); // sum2.call(kim) => 30
+console.log("sum2.call(lee)", sum2.call(lee, ': ')); // sum2.call(lee) : 20
+```
+
+이렇게 call에 대하여 알아보았다. 참고로, call과 비슷하게 동작하는 apply라는 것도 있다.
