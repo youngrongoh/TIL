@@ -961,3 +961,32 @@ console.log("sum2.call(lee)", sum2.call(lee, ': ')); // sum2.call(lee) : 20
 ```
 
 이렇게 call에 대하여 알아보았다. 참고로, call과 비슷하게 동작하는 apply라는 것도 있다.
+
+## 14.3. bind
+
+call 못지않게 독특한 bind라는 것이 있다.
+bind는 묶는다 엮는다는 의미이다.
+call은 호출될 때마다 내부의 this를 바꿔주었다면,
+bind는 내부적으로 사용할 this를 영구적으로 고정시키는 것이다.
+
+```jsx
+const kim = { name: 'kim', first: 10, second: 20 };
+const lee = { name: 'lee', first: 10, second: 10 };
+function sum(prefix) {
+    return prefix + (this.first + this.second);
+}
+
+console.log("sum.call(kim)", sum.call(kim, '=> ')); // sum.call(kim) => 30
+console.log("sum.call(lee)", sum.call(lee, ': ')); // sum.call(lee) : 20
+
+const kimSum = sum.bind(kim, '-> ');
+console.log('kimSum()', kimSum()); // kimSum() -> 30
+```
+
+그렇다면, call도 위와 동일한 방법으로 사용할 수는 없을까?
+
+```jsx
+const leeSum = sum.call(lee, '->'); // error
+```
+
+call은 일시적으로 this를 바꿔준 채로 동작하고 사라지므로 새로운 함수로 할당할 수 없다.
