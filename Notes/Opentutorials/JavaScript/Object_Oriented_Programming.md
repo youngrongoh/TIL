@@ -990,3 +990,69 @@ const leeSum = sum.call(lee, '->'); // error
 ```
 
 call은 일시적으로 this를 바꿔준 채로 동작하고 사라지므로 새로운 함수로 할당할 수 없다.
+
+# 15. prototype vs __proto__
+
+## 15.1. prototype vs proto
+
+먼저 함수가 무엇인가에 대해 얘기해보자.
+
+```jsx
+function Person(){}
+const Person = new Function();
+```
+
+위 두 줄의 코드는 서로 같은 것을 의미한다.
+JavaScript에서 함수는 객체이다.
+그러므로 프로퍼티를 가질 수 있다.
+
+```jsx
+function Person(name, first, second) {
+	this.name = name;
+	this.first = first;
+	this.second = second;
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/12cc8a84-31c4-4f84-aa55-f6867be60215/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/12cc8a84-31c4-4f84-aa55-f6867be60215/Untitled.png)
+
+우리가 함수 하나 정의하면 객체가 생긴다.
+그런데 또 하나의 객체가 더 생긴다. 그것은 바로 함수의 prototype 객체이다.
+이 두 객체는 서로 연관되어 있다.
+
+함수의 객체는 프로토타입 프로퍼티를 가지고 있으며 이 객체는 해당 함수의 프로토타입 객체를 가리킨다.
+프로토타입 객체는 constructor 프로퍼티를 가지고 있으며 이는 해당 함수의 객체를 가리킨다.
+이렇게 함수의 객체와 프로토타입 객체는 상호참조를 하고 있다.
+
+```jsx
+Person.prototype.sum = function(){}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/663a7a52-5fe0-4e2c-b8b6-8774204b2e94/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/663a7a52-5fe0-4e2c-b8b6-8774204b2e94/Untitled.png)
+
+위와 같이 prototype 프로퍼티에 sum이라는 함수를 정의하면,
+프로토타입 객체에 sum 메소드가 생성된다.
+
+위 함수는 new라는 키워드와 함께 객체를 생성할 수 있다.
+
+```jsx
+const kim = new Person('kim', 10, 20)
+```
+
+이때 함수에 정의되었던 프로퍼티들과 함께 __proto__라고 하는 프로퍼티가 생성된다.
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1138a219-7b8a-4530-9f00-62b0c2c94044/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1138a219-7b8a-4530-9f00-62b0c2c94044/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/61259164-a891-493f-b9d9-d2bc83d04460/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/61259164-a891-493f-b9d9-d2bc83d04460/Untitled.png)
+
+이 __proto__라는 프로퍼티는 constructor 함수의 prototype 객체를 가리키게 된다.
+
+그러므로 우리는 constructor 함수의 prototype 프로퍼티와, 동시에 새로 생성된 자식 객체의 __proto__ 프로퍼티 두 가지를 통해 prototype 객체에 접근할 수 있는 것이다.
+
+```jsx
+console.log(kim.name);
+kim.sum();
+```
+
+첫 번째 줄의 코드는 해당 객체에서 해당 프로퍼티가 있는지 찾으며, 있으므로 실행한다.
+두 번째 줄의 코드는 해당 객체에서 해당 메소드를 찾는데, 없으므로 __proto__가 가리키는 constructor 객체의 prototype 객체에서 해당 프로퍼티가 있는지 찾고, 있으므로 prototype 객체를 참조하여 실행한다.
