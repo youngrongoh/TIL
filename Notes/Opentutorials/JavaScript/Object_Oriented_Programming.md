@@ -1174,3 +1174,56 @@ Person의 prototype 객체는 constructor를 통해 Person을 참조한다.
 ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/392f560f-512e-4270-82a7-e65665b46752/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/392f560f-512e-4270-82a7-e65665b46752/Untitled.png)
 
 위와 같이 어떤 객체의 constructor가 무엇인지 몰라도 그것과 같은 constructor를 상속하는 새로운 객체를 만들 수도 있다.
+
+## 16.5. 생성자 함수를 통한 상속: constructor 속성 바로잡기
+
+```jsx
+PersonPlus.prototype = Object.create(Person.prototype);
+
+const kim = new PersonPlus('kim', 10, 20, 30);
+console.log('kim.constructor', kim.constructor); // kim.constructor [Function: Person]
+```
+
+위 방법은 PersonPlus의 prototype을 `Object.create(Person.prototype)`를 통해 새로 만들어진 객체로 대체된다.
+그러므로 자연히 `kim.constructor` 곧, PersonPlus의 prototype에 있는 constructor는 Person이 된다.
+이것을 해결해보자.
+
+```jsx
+PersonPlus.prototype.constructor = PersonPlus;
+
+const kim = new PersonPlus('kim', 10, 20, 30);
+console.log('kim.constructor', kim.constructor); // kim.constructor [Function: PersonPlus]
+```
+
+다시 PersonPlus.prototype.constructor를 PersonPlus로 바꿔주면 된다.
+
+그런데, 만약 PersonPlus에 메소드를 상속 이전에 추가해버리면 상속이되면서 추가한 메소드는 지워지게 되고 이를 모르고 해당 메소드를 실행하게 되면 오류가 발생하게 된다.
+
+```jsx
+PersonPlus.prototype.avg = function () {
+    return (this.first + this.second + this.third) / 3;
+}
+
+PersonPlus.prototype = Object.create(Person.prototype);
+PersonPlus.prototype.constructor = PersonPlus;
+
+const kim = new PersonPlus('kim', 10, 20, 30);
+console.log('kim.avg()', kim.avg()); // error
+```
+
+__proto__를 쓰면 이러한 문제가 발생하지 않는다.
+
+```jsx
+PersonPlus.prototype.avg = function () {
+    return (this.first + this.second + this.third) / 3;
+}
+
+PersonPlus.prototype.__proto__ = Person.prototype;
+
+const kim = new PersonPlus('kim', 10, 20, 30);
+console.log('kim.avg()', kim.avg()); // kim.avg() 20
+```
+
+거의 모든 브라우저가 __proto__를 탑재하고 있지만 이는 비표준이므로 Object.create()를 잘 사용하거나, 가장 좋은 방법은 class를 사용하는 것이다. class에서는 이러한 문제가 방생하지 않고, 가독성도 좋다.
+
+그러나 이렇게 constructor를 이용한 방법을 이해해두는 것을 중급으로 가는데 도움을 줄 것이다.
