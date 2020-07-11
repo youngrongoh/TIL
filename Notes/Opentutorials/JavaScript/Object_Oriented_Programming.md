@@ -1064,3 +1064,68 @@ kim.sum();
 자바스크립트에서 상속을 하는 방법은
 객체가 객체를 직접 상속하는 방법과, class 즉 constructor 함수를 이용해 상속하는 방법이 있다.
 그 중 class를 사용하는 것이 좀 더 안정적이고 사고 위험이 적다.
+
+## 16.2. 생성자 함수를 통한 상속: 부모 생성자 실행
+
+constructor 함수를 통해 상속을 하는 방법을 알아보자.
+앞서 작성한 아래의 class를 통한 상속과 같은 예제를 구현해보겠다.
+
+```jsx
+class Person {
+    constructor(name, first, second) {
+        this.name = name;
+        this.first = first;
+        this.second = second;
+    }
+    sum() {
+        return this.first + this.second;
+    }
+}
+```
+
+class가 아니라 함수를 만든다.
+그리고 class에 sum 메소드를 작성했던 것을 여기서는 constructor 함수의 prototype 객체에 메소드를 추가하는 방식을 사용한다.
+
+```jsx
+function Person(name, first, second) {
+    this.name = name;
+    this.first = first;
+    this.second = second;
+}
+Person.prototype.sum = function () {
+    return this.furst + this.second;
+}
+```
+
+constructor 함수를 상속한 함수를 만들어보자.
+class로는 아래와 같이 상속했다.
+
+```jsx
+class PersonPlus extends Person {
+    constructor(name, first, second, third) {
+        super(name, first, second);
+        this.third = third;
+    }
+    sum() {
+        return super.sum() + this.third;
+    }
+    avg() {
+        return (this.first + this.second + this.third) / 3;
+    }
+}
+```
+
+상속할 함수를 만들고 call()을 실행한다. 그리고 constructor 함수에 없던 메소드는 prototype에 메소드로 추가해주면 된다.
+
+```jsx
+function PersonPlus(name, first, second, third) {
+    Person.call(this, name, first, second);
+    this.third = third;
+}
+PersonPlus.prototype.avg = function () {
+    return (this.first + this.second + this.third) / 3;
+}
+```
+
+그런데, 아직 끝나지 자식에게 상속되지 않은 것이 있다.
+바로 부모의 prototype 객체에 있는 sum이다.
