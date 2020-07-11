@@ -1160,3 +1160,17 @@ console.log('kim.constructor', kim.constructor); // kim.constructor [Function: P
 PersonPlus.prototype.constructor = PersonPlus;
 console.log('kim.constructor', kim.constructor); // kim.constructor [Function: PersonPlus]
 ```
+
+## 16.4. 생성자 함수를 통한 상속: constructor 속성은 무엇인가?
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7ce4de7b-a5af-4ed3-ad49-85f3e38a7b4e/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7ce4de7b-a5af-4ed3-ad49-85f3e38a7b4e/Untitled.png)
+
+Person은 prototype을 통해 Person의 prototype 객체를 참조하고,
+Person의 prototype 객체는 constructor를 통해 Person을 참조한다.
+두 객체는 이렇게 상호참조하고 있다.
+그리고, new Person을 통해 만들어진 kim과 lee는 __proto__를 통해 Person의 prototype 객체를 참조한다.
+또한, kim.constructor라고 하면 kim에서 찾는데 없으니, __proto___가 가리키는 Person의 prototype에서 찾고, 여기에 있는 constructor가 있으며, 이것은 Person을 가리키고 있다.
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/392f560f-512e-4270-82a7-e65665b46752/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/392f560f-512e-4270-82a7-e65665b46752/Untitled.png)
+
+위와 같이 어떤 객체의 constructor가 무엇인지 몰라도 그것과 같은 constructor를 상속하는 새로운 객체를 만들 수도 있다.
