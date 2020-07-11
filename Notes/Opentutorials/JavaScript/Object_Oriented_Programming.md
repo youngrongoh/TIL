@@ -1093,7 +1093,7 @@ function Person(name, first, second) {
     this.second = second;
 }
 Person.prototype.sum = function () {
-    return this.furst + this.second;
+    return this.first + this.second;
 }
 ```
 
@@ -1129,3 +1129,34 @@ PersonPlus.prototype.avg = function () {
 
 그런데, 아직 끝나지 자식에게 상속되지 않은 것이 있다.
 바로 부모의 prototype 객체에 있는 sum이다.
+
+## 16.3. 생성자 함수를 통한 상속: 부모와 연결하기
+
+현재 kim.sum()을 사용할 수 없는 상황이다.
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d9e1c606-b55c-4ba4-9731-a449dac3aa12/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d9e1c606-b55c-4ba4-9731-a449dac3aa12/Untitled.png)
+
+어떤 요소가 kim과 kim의 __proto__가 가리키는 PersonPlus의 prototype 객체에 모두 없을 때 PersonPlus의 prototype 객체 안에 있는 __proto__가 PersonPlus의 constructor 함수인 Person의 prototype 객체를 참조하도록 해야 한다.
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/32167a61-66f1-4c60-9db4-ab3db9abf4b3/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/32167a61-66f1-4c60-9db4-ab3db9abf4b3/Untitled.png)
+
+이것은 아주 간단하게도 한 줄의 코드면 된다.
+
+```jsx
+PersonPlus.prototype.__proto__ = Person.prototype;
+```
+
+그런데 이는 표준이 아니다. 위 코드 대신 Object.create()를 사용해보자.
+
+```jsx
+PersonPlus.prototype = Object.create(Person.prototype);
+console.log('kim.constructor', kim.constructor); // kim.constructor [Function: Person]
+```
+
+그런데, 또 문제가 있다. kim의 constructor가 PersonPlus가 아니라 Person이 되어 버린다.
+이를 해결하기 위해서는 아래 코드를 추가해주면 된다.
+
+```jsx
+PersonPlus.prototype.constructor = PersonPlus;
+console.log('kim.constructor', kim.constructor); // kim.constructor [Function: PersonPlus]
+```
