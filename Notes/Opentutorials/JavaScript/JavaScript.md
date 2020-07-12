@@ -18,3 +18,76 @@
 여기서는 대표적인 호스트 환경인 웹브라우저에서의 모듈화 방법에 대해 알아보자.
 
 > 호스트 환경이란, 자바스크립트가 구동되는 환경을 의미한다.
+
+### 2.12.2. 모듈화
+
+다음은 아주 간단한 페이지이다. 모듈이 없다면, 만약 welcome()이라는 함수가 매우 복잡하고 길고 또, 자주 사용되는 코드였다면, 다른 페이지에서 이 함수가 사용 될 때 또 다시 같은 코드를 새로 불러와야 한다. 유지보수도 어렵고 메모리도 낭비된다.
+
+```jsx
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <script>
+				function welcome() {
+				    return 'Hello world'
+				};
+        alert(welcome());
+    </script>
+</body>
+
+</html>
+```
+
+모듈화 시켜보면
+
+```jsx
+function welcome() {
+    return 'Hello world'
+};
+```
+
+```jsx
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="greeting.js"></script>
+</head>
+
+<body>
+    <script>
+        alert(welcome());
+    </script>
+</body>
+
+</html>
+```
+
+이렇게 .js 파일을 따로 빼줌으로써 가독성이 높아진다.
+그리고 다음과 같이 다른 페이지에서도 재사용할 수 있다.
+
+```jsx
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="greeting.js"></script>
+</head>
+
+<body>
+    <script>
+        welcome();
+    </script>
+</body>
+
+</html>
+```
+
+.js 파일을 수정하면 이 모듈을 사용하는 모든 페이지에서 한 번에 함수의 동작이 바뀌게 된다. 즉, 유지보수에 유용하다.
